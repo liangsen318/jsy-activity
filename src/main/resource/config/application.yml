@@ -1,0 +1,49 @@
+# Server settings (ServerProperties)
+server:
+  port: 8081
+  address: 127.0.0.1
+  sessionTimeout: 30
+  contextPath: /
+
+# Tomcat specifics
+tomcat:
+  accessLogEnabled: false
+  protocolHeader: x-forwarded-proto
+  remoteIpHeader: x-forwarded-for
+  basedir:
+  backgroundProcessorDelay: 30 # secs
+  
+spring:
+  # 环境 dev|test|pro
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:mysql://192.168.10.188:3306/ckdx-1?allowMultiQueries=true&useUnicode=true&serverTimezone=CTT&characterEncoding=utf-8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123456
+    sql-script-encoding: utf-8
+    hikari:
+      connection-timeout: 120000
+      maximum-pool-size: 10
+      idleTimeout: 9000
+      max-lifetime: 1765000
+        #连接池的配置信息
+#        initialSize: 10
+#        minIdle: 10
+#        maxActive: 100
+#        maxWait: 60000
+#        timeBetweenEvictionRunsMillis: 60000
+#        minEvictableIdleTimeMillis: 300000
+#        validationQuery: SELECT 1 FROM DUAL
+#        testWhileIdle: true
+#        testOnBorrow: false
+#        testOnReturn: false
+#        poolPreparedStatements: true
+#        maxPoolPreparedStatementPerConnectionSize: 20
+#自动创建、更新、验证数据库表结构
+  jpa:
+    properties.hibernate.hbm2ddl.auto: update
+    show-sql: true
+####校验流程文件，默认校验resources下的processes文件夹里的流程文件 
+  activiti:
+    check-process-definitions: true

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/bohui">
+  <process id="bohui" name="bohui" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="bohui_submit" name="请假提交">
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.jsy.activity.listener.UserListListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="bohui_signCheck" name="组长审批" activiti:assignee="${user}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="userList" activiti:elementVariable="user"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="bohui_submit"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="bohui_submit" targetRef="bohui_signCheck"></sequenceFlow>
+    <serviceTask id="bohui_servicetask" name="业务回写" activiti:class="com.activity.servicetask.ServiceTask"></serviceTask>
+    <sequenceFlow id="flow11" name="通过" sourceRef="bohui_signCheck" targetRef="bohui_servicetask"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="bohui_servicetask" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_bohui">
+    <bpmndi:BPMNPlane bpmnElement="bohui" id="BPMNPlane_bohui">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="696.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bohui_submit" id="BPMNShape_bohui_submit">
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bohui_signCheck" id="BPMNShape_bohui_signCheck">
+        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bohui_servicetask" id="BPMNShape_bohui_servicetask">
+        <omgdc:Bounds height="55.0" width="105.0" x="661.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="455.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="661.0" y="247.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="549.0" y="230.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="713.0" y="275.0"></omgdi:waypoint>
+        <omgdi:waypoint x="713.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
